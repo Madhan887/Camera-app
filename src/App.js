@@ -16,11 +16,7 @@ function App() {
     "/assets/View_2_Open_Select.png",
   ];
 
-  const imageAssets3 = [
-    "/assets/View_2_Open_Unselect.png",
-    "/assets/View_2_Capture.png",
-    "/assets/View_2_Open_Select.png",
-  ];
+  const imageAssets3 = imageAssets2;
 
   const webcamRef = useRef(null);
 
@@ -41,7 +37,6 @@ function App() {
   const [loading3, setLoading3] = useState(false);
 
   const [activeView, setActiveView] = useState(null);
-
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
@@ -74,11 +69,9 @@ function App() {
     setCapturedImage(screenshot);
     setLoading(true);
     setShowTick(false);
-
     setIndex(2);
 
     setTimeout(() => setShowTick(true), 1000);
-
     setTimeout(() => {
       setLoading(false);
       setShowTick(false);
@@ -107,146 +100,97 @@ function App() {
     setIndex3(0);
   };
 
-  const handleView1Click = () => {
-    if (activeView && activeView !== 'view1') return;
-    setActiveView('view1');
-    if (index1 === 0) setIndex1(1);
-    else if (index1 === 1) captureImage(setCapturedImage1, setLoading1, setShowTick1, setIndex1);
-  };
-
-  const handleView2Click = () => {
-    if (activeView && activeView !== 'view2') return;
-    setActiveView('view2');
-    if (index2 === 0) setIndex2(1);
-    else if (index2 === 1) captureImage(setCapturedImage2, setLoading2, setShowTick2, setIndex2);
-  };
-
-  const handleView3Click = () => {
-    if (activeView && activeView !== 'view3') return;
-    setActiveView('view3');
-    if (index3 === 0) setIndex3(1);
-    else if (index3 === 1) captureImage(setCapturedImage3, setLoading3, setShowTick3, setIndex3);
+  const handleViewClick = (view, index, setIndex, setCapturedImage, setLoading, setShowTick) => {
+    if (activeView && activeView !== view) return;
+    setActiveView(view);
+    if (index === 0) setIndex(1);
+    else if (index === 1) captureImage(setCapturedImage, setLoading, setShowTick, setIndex);
   };
 
   return (
     <div className="app-container">
-      <div className="content">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="main-content">
+        {/* Overlay top-left and top-right */}
+        <div className="top-left">
           <img src="/assets/DARA.png" alt="DARA" className="DARA" />
+        </div>
+        <div className="top-right">
           <img src="/assets/Mask_Group_2.png" alt="mask_group" className="mask_group" />
         </div>
 
-        {((index1 === 1 || index2 === 1 || index3 === 1) && !loading1 && !loading2 && !loading3) && (
-          <Webcam
-            audio={false}
-            ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            width="100%"
-            height="100%"
-            videoConstraints={{
-              facingMode: { ideal: isMobile ? "environment" : "user" }
-            }}
-          />
-        )}
+        {/* Webcam or Captured View */}
+        {(index1 === 1 || index2 === 1 || index3 === 1) &&
+          !loading1 && !loading2 && !loading3 && (
+            <Webcam
+              audio={false}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              className="fullscreen-webcam"
+              playsInline
+              videoConstraints={{
+                facingMode: { ideal: isMobile ? "environment" : "user" }
+              }}
+            />
+          )}
 
         {loading1 && capturedImage1 && (
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '35px'}}>
-              <img
-                src={capturedImage1}
-                alt="Captured1"
-                style={{ maxWidth: '400px', height: 'auto', borderRadius: '8px' }}
-              />
-            </div>
-            {showTick1 && (
-              <img
-                src="/assets/Pop_Up_Complete.png"
-                alt="Tick"
-                className="tick-overlay"
-              />
-            )}
-          </div>
+          <img src={capturedImage1} alt="Captured1" className="fullscreen-webcam" />
         )}
-
         {loading2 && capturedImage2 && (
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '25px'}}>
-              <img
-                src={capturedImage2}
-                alt="Captured2"
-                style={{ maxWidth: '400px', height: 'auto', borderRadius: '8px' }}
-              />
-            </div>
-            {showTick2 && (
-              <img
-                src="/assets/Pop_Up_Complete.png"
-                alt="Tick"
-                className="tick-overlay"
-              />
-            )}
-          </div>
+          <img src={capturedImage2} alt="Captured2" className="fullscreen-webcam" />
         )}
-
         {loading3 && capturedImage3 && (
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '25px'}}>
-              <img
-                src={capturedImage3}
-                alt="Captured3"
-                style={{ maxWidth: '400px', height: 'auto', borderRadius: '8px' }}
-              />
-            </div>
-            {showTick3 && (
-              <img
-                src="/assets/Pop_Up_Complete.png"
-                alt="Tick"
-                className="tick-overlay"
-              />
-            )}
-          </div>
+          <img src={capturedImage3} alt="Captured3" className="fullscreen-webcam" />
         )}
+
+        {/* Tick overlay */}
+        {showTick1 && <img src="/assets/Pop_Up_Complete.png" alt="Tick" className="tick-overlay" />}
+        {showTick2 && <img src="/assets/Pop_Up_Complete.png" alt="Tick" className="tick-overlay" />}
+        {showTick3 && <img src="/assets/Pop_Up_Complete.png" alt="Tick" className="tick-overlay" />}
       </div>
 
-      <div
-        className="image-overlay"
-        style={{
-          top: isMobile
-            ? (index1 === 1 || index2 === 1 || index3 === 1) ? '68vh' : '75vh'
-            : (index1 === 1 || index2 === 1 || index3 === 1 ? '60vh' : '73vh')
-        }}
-      >
-        <img
-          src={imageAssets1[index1]}
-          alt="View 1"
-          className="overlay-img"
-          onClick={handleView1Click}
-          style={{ cursor: activeView && activeView !== 'view1' ? 'not-allowed' : 'pointer' }}
-        />
-        <img
-          src={imageAssets2[index2]}
-          alt="View 2"
-          className="overlay-img"
-          onClick={handleView2Click}
-          style={{ cursor: activeView && activeView !== 'view2' ? 'not-allowed' : 'pointer' }}
-        />
-        <img
-          src={imageAssets3[index3]}
-          alt="View 3"
-          className="overlay-img"
-          onClick={handleView3Click}
-          style={{ cursor: activeView && activeView !== 'view3' ? 'not-allowed' : 'pointer' }}
-        />
-      </div>
+      <div>
+        <div className="footer" style={{ backgroundImage: `url('/assets/Blue_box.png')` }}>
+          <div className="image-overlay">
+            <img
+              src={imageAssets1[index1]}
+              alt="View 1"
+              className="overlay-img"
+              onClick={() =>
+                handleViewClick('view1', index1, setIndex1, setCapturedImage1, setLoading1, setShowTick1)
+              }
+              style={{ cursor: activeView && activeView !== 'view1' ? 'not-allowed' : 'pointer' }}
+            />
+            <img
+              src={imageAssets2[index2]}
+              alt="View 2"
+              className="overlay-img"
+              onClick={() =>
+                handleViewClick('view2', index2, setIndex2, setCapturedImage2, setLoading2, setShowTick2)
+              }
+              style={{ cursor: activeView && activeView !== 'view2' ? 'not-allowed' : 'pointer' }}
+            />
+            <img
+              src={imageAssets3[index3]}
+              alt="View 3"
+              className="overlay-img"
+              onClick={() =>
+                handleViewClick('view3', index3, setIndex3, setCapturedImage3, setLoading3, setShowTick3)
+              }
+              style={{ cursor: activeView && activeView !== 'view3' ? 'not-allowed' : 'pointer' }}
+            />
+          </div>
 
-      <div className="footer" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-        <img
-          src="assets/Upload_button.png"
-          width="100px"
-          alt="Upload Button"
-          onClick={handleUploadClick}
-          style={{ cursor: 'pointer' }}
-        />
-        <p>Tap to select the view and upload the images when complete</p>
+          <div className="upload-container">
+            <img
+              src="/assets/Upload_button.png"
+              width="100px"
+              alt="Upload Button"
+              onClick={handleUploadClick}
+            />
+            <p>Tap to select the view and upload the images when complete</p>
+          </div>
+        </div>
       </div>
     </div>
   );
