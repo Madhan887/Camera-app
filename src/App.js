@@ -100,8 +100,9 @@ function App() {
     setIndex3(0);
   };
 
-  const handleViewClick = (view, index, setIndex, setCapturedImage, setLoading, setShowTick) => {
+  const handleViewClick = (view, index, setIndex, setCapturedImage, setLoading, setShowTick, capturedImage) => {
     if (activeView && activeView !== view) return;
+    if (capturedImage) return;
     setActiveView(view);
     if (index === 0) setIndex(1);
     else if (index === 1) captureImage(setCapturedImage, setLoading, setShowTick, setIndex);
@@ -159,7 +160,7 @@ function App() {
               alt="View 1"
               className="overlay-img"
               onClick={() =>
-                handleViewClick('view1', index1, setIndex1, setCapturedImage1, setLoading1, setShowTick1)
+                handleViewClick('view1', index1, setIndex1, setCapturedImage1, setLoading1, setShowTick1, capturedImage1)
               }
               style={{ cursor: activeView && activeView !== 'view1' ? 'not-allowed' : 'pointer' }}
             />
@@ -168,7 +169,7 @@ function App() {
               alt="View 2"
               className="overlay-img"
               onClick={() =>
-                handleViewClick('view2', index2, setIndex2, setCapturedImage2, setLoading2, setShowTick2)
+                handleViewClick('view2', index2, setIndex2, setCapturedImage2, setLoading2, setShowTick2, capturedImage2)
               }
               style={{ cursor: activeView && activeView !== 'view2' ? 'not-allowed' : 'pointer' }}
             />
@@ -177,7 +178,7 @@ function App() {
               alt="View 3"
               className="overlay-img"
               onClick={() =>
-                handleViewClick('view3', index3, setIndex3, setCapturedImage3, setLoading3, setShowTick3)
+                handleViewClick('view3', index3, setIndex3, setCapturedImage3, setLoading3, setShowTick3, capturedImage3)
               }
               style={{ cursor: activeView && activeView !== 'view3' ? 'not-allowed' : 'pointer' }}
             />
