@@ -111,11 +111,13 @@ function App() {
     <div className="app-container">
       <div className="main-content">
         {/* Overlay top-left and top-right */}
-        <div className="top-left">
-          <img src="/assets/DARA.png" alt="DARA" className="DARA" />
-        </div>
-        <div className="top-right">
-          <img src="/assets/Mask_Group_2.png" alt="mask_group" className="mask_group" />
+        <div className='flex-space-between'>
+          <div className="top-left">
+            <img src="/assets/DARA.png" alt="DARA" className="DARA" />
+          </div>
+          <div className="top-right">
+            <img src="/assets/Mask_Group_2.png" alt="mask_group" className="mask_group" />
+          </div>
         </div>
 
         {/* Webcam or Captured View */}

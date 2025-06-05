@@ -1,15 +1,27 @@
 .app-container {
   position: relative;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   font-family: sans-serif;
 }
 
-.DARA,
-.mask_group {
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  z-index: 2;
+  width: 90%;
+  padding: 2vh 5%;
+}
+
+.DARA{
   height: 45px;
+}
+.mask_group {
+  height: 35px;
 }
 
 .main-content {
@@ -37,11 +49,6 @@
   z-index: 3;
 }
 
-.top-left,
-.top-right {
-  position: absolute;
-  z-index: 2;
-}
 
 .top-left {
   top: 10px;
@@ -97,6 +104,11 @@
 
 /* Mobile view */
 @media (max-width: 768px) {
+  .flex-space-between{
+    width: 100%;
+    padding: 2vh 0;
+  }
+
   .upload-container {
     display: flex;
     align-items: center;
